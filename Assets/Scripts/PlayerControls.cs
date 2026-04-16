@@ -26,8 +26,10 @@ public class PlayerControls : MonoBehaviour
     
     void FixedUpdate()
     {
-        float velocity = Mathf.Abs(myRigidbody.linearVelocityX);
-        playerAnimator.SetFloat("Velocity", velocity);
+        float velocityX = Mathf.Abs(myRigidbody.linearVelocityX);
+        float velocityY = myRigidbody.linearVelocityY;
+        playerAnimator.SetFloat("XVelocity", velocityX);
+        playerAnimator.SetFloat("YVelocity", velocityY);
         playerAnimator.SetBool("IsGrounded", IsGrounded());
     }
 
