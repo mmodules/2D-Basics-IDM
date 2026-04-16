@@ -11,6 +11,8 @@ public class PlayerControls : MonoBehaviour
     
     [Header("Checks")]
     public Transform groundCheck;
+
+    private int jumpsLeft = 2;
     
     private Rigidbody2D myRigidbody;
     private SpriteRenderer spriteRenderer;
@@ -31,6 +33,7 @@ public class PlayerControls : MonoBehaviour
         playerAnimator.SetFloat("XVelocity", velocityX);
         playerAnimator.SetFloat("YVelocity", velocityY);
         playerAnimator.SetBool("IsGrounded", IsGrounded());
+        playerAnimator.SetInteger("JumpsLeft", jumpsLeft);
     }
 
     private void OnMove(InputValue value)
@@ -50,10 +53,16 @@ public class PlayerControls : MonoBehaviour
 
     private void OnJump(InputValue value)
     {
+        if (IsGrounded())
+        {
+            jumpsLeft = 2;
+        }
+        
         // Only jump when the key is pressed
-        if (value.isPressed && IsGrounded())
+        if (value.isPressed && (IsGrounded() || jumpsLeft > 0))
         {
             myRigidbody.linearVelocityY = jumpForce;
+            jumpsLeft--;
         }
     }
     
