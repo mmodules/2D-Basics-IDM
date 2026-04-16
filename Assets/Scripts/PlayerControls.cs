@@ -2,7 +2,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer))]
+[RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer), typeof(Animator))]
 public class PlayerControls : MonoBehaviour
 {
     [Header("Controls")]
@@ -14,12 +14,21 @@ public class PlayerControls : MonoBehaviour
     
     private Rigidbody2D myRigidbody;
     private SpriteRenderer spriteRenderer;
+    private Animator playerAnimator;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        playerAnimator = GetComponent<Animator>();
+    }
+    
+    void FixedUpdate()
+    {
+        float velocity = Mathf.Abs(myRigidbody.linearVelocityX);
+        playerAnimator.SetFloat("Velocity", velocity);
+        playerAnimator.SetBool("IsGrounded", IsGrounded());
     }
 
     private void OnMove(InputValue value)
@@ -54,5 +63,6 @@ public class PlayerControls : MonoBehaviour
             groundCheck.position,
             size,
             0);
+        
     }
 }
